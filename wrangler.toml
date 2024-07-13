@@ -1,0 +1,12 @@
+name = "trending-repo-worker"
+main = "build/worker/shim.mjs"
+compatibility_date = "2024-07-13"
+
+[build]
+command = "cargo install -q worker-build && worker-build --release"
+
+[triggers]
+crons = ["0 12 * * 5"]
+
+[env.local.vars]
+ENDPOINT = "http://localhost:8080"
