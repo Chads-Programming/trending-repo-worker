@@ -41,7 +41,6 @@ async fn main(_e: ScheduledEvent, env: Env, _ctx: ScheduleContext) {
 
     let client = ClientBuilder::default()
         .default_headers(headers)
-        .user_agent("Mozilla/5.0 LeetCode API")
         .build()
         .expect("Cannot build client reqwest");
 
