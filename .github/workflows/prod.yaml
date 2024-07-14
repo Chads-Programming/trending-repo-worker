@@ -45,8 +45,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
           secrets: |
             BOT_ENDPOINT
             BOT_API_KEY
-            GITHUB_TOKEN
