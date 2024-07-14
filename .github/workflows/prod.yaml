@@ -40,7 +40,7 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         env:
           BOT_ENDPOINT: ${{ secrets.BOT_ENDPOINT }}
-          BOT_APIKEY: ${{ secrets.BOT_API_KEY }}
+          BOT_API_KEY: ${{ secrets.BOT_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
