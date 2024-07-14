@@ -7,6 +7,7 @@ command = "cargo install -q worker-build && worker-build --release"
 
 [triggers]
 crons = ["0 12 * * 5"]
+# crons = ["* * * * *"]
 
 [env.local.vars]
-ENDPOINT = "http://localhost:8080"
+BOT_ENDPOINT = "http://localhost:8080/publish-trending-repos"

@@ -1,56 +1,51 @@
-use axum::http::{HeaderMap, HeaderValue};
 use models::SearchRepositoryQuery;
 use reqwest::ClientBuilder;
 use worker::*;
 
+mod chad_bot;
+mod consts;
 mod models;
-mod services;
+mod trending_repo;
 
 #[event(scheduled)]
 async fn main(_e: ScheduledEvent, env: Env, _ctx: ScheduleContext) {
-    // Custom panic
     #[cfg(target_arch = "wasm32")]
     std::panic::set_hook(Box::new(|info: &std::panic::PanicInfo| {
         console_error!("{info}")
     }));
 
-    // let bot_api_key = env
-    //     .secret("CHAD_BOT_API_KEY")
-    //     .map(|e: Secret| e.to_string())
-    //     .expect("Bot APIKEY Secret not found");
+    let bot_api_key = env
+        .secret("CHAD_BOT_API_KEY")
+        .map(|e: Secret| e.to_string())
+        .expect("Chad bot APIKEY Secret not found");
 
     let github_token = env
         .secret("GITHUB_TOKEN")
         .map(|e: Secret| e.to_string())
-        .expect("Bot APIKEY Secret not found");
+        .expect("Github token Secret not found");
 
-    let mut headers = HeaderMap::new();
-
-    headers.append(
-        "Accept",
-        HeaderValue::from_str("application/vnd.github+json").unwrap(),
-    );
-    headers.append(
-        "X-GitHub-Api-Version",
-        HeaderValue::from_str("2022-11-28").unwrap(),
-    );
-    headers.append(
-        "Authorization",
-        HeaderValue::from_str(github_token.as_str()).unwrap(),
-    );
+    let bot_endoint = env
+        .secret("BOT_ENDPOINT")
+        .map(|e: Secret| e.to_string())
+        .expect("Bot endpoint var not found");
 
     let client = ClientBuilder::default()
-        .default_headers(headers)
+        .user_agent("Mozilla/5.0")
         .build()
         .expect("Cannot build client reqwest");
 
-    let query = &SearchRepositoryQuery::new(Some(100), ["nextjs", "typescript"].to_vec());
+    let query = SearchRepositoryQuery::new(Some(100), ["nextjs", "typescript"].to_vec());
+    let trending_response =
+        trending_repo::get_trending_repos(&client, &github_token, &query, 10).await;
 
-    let result = services::trending_repositories(&client, query, 10).await;
+    let Ok(trending_repos) = trending_response else {
+        let err = trending_response.err().unwrap();
+        console_error!("{:?}", err);
 
-    if let Ok(repos) = result {
-        console_debug!("{:?}", { repos });
-    } else {
-        console_error!("{:?}", result.err());
-    }
+        return;
+    };
+
+    chad_bot::publish_trending_repos(&client, &bot_endoint, &bot_api_key, trending_repos)
+        .await
+        .unwrap();
 }
