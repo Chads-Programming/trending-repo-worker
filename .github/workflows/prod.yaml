@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - ".github/workflows/prod.yml"
+      - ".github/workflows/prod.yaml"
       - "wrangler.toml"
       - "src/**/**.rs"
       - "Cargo.toml"
