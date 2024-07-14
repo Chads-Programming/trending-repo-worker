@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - ".github/workflows/deploy.yml"
+      - ".github/workflows/prod.yml"
       - "wrangler.toml"
       - "src/**/**.rs"
       - "Cargo.toml"
@@ -39,11 +39,14 @@ jobs:
       - name: Deploy
         uses: cloudflare/wrangler-action@v3
         env:
-          ENDPOINT: ${{ secrets.ENDPOINT }}
-          BOT_APIKEY: ${{ secrets.BOT_APIKEY }}
+          ENDPOINT: ${{ secrets.BOT_ENDPOINT }}
+          BOT_APIKEY: ${{ secrets.BOT_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
           secrets: |
-            ENDPOINT
-            BOT_APIKEY
+            BOT_ENDPOINT
+            BOT_API_KEY
+            GITHUB_TOKEN
