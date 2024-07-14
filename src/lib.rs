@@ -15,12 +15,12 @@ async fn main(_e: ScheduledEvent, env: Env, _ctx: ScheduleContext) {
     }));
 
     let bot_api_key = env
-        .secret("CHAD_BOT_API_KEY")
+        .secret("BOT_API_KEY")
         .map(|e: Secret| e.to_string())
         .expect("Chad bot APIKEY Secret not found");
 
     let github_token = env
-        .secret("GITHUB_TOKEN")
+        .secret("API_GITHUB_TOKEN")
         .map(|e: Secret| e.to_string())
         .expect("Github token Secret not found");
 
