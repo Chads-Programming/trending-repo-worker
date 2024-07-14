@@ -48,3 +48,4 @@ jobs:
           secrets: |
             BOT_ENDPOINT
             BOT_API_KEY
+            GITHUB_TOKEN
