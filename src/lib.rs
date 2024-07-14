@@ -17,17 +17,17 @@ async fn main(_e: ScheduledEvent, env: Env, _ctx: ScheduleContext) {
     let bot_api_key = env
         .secret("BOT_API_KEY")
         .map(|e: Secret| e.to_string())
-        .expect("Chad bot APIKEY Secret not found");
+        .expect("BOT_API_KEY Secret not found");
 
     let github_token = env
         .secret("API_GITHUB_TOKEN")
         .map(|e: Secret| e.to_string())
-        .expect("Github token Secret not found");
+        .expect("API_GITHUB_TOKEN Secret not found");
 
     let bot_endoint = env
         .secret("BOT_ENDPOINT")
         .map(|e: Secret| e.to_string())
-        .expect("Bot endpoint var not found");
+        .expect("BOT_ENDPOINT var not found");
 
     let client = ClientBuilder::default()
         .user_agent("Mozilla/5.0")
