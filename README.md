@@ -30,4 +30,4 @@ Para probar el cronjob hacer los siguiente:
 curl "http://localhost:8787/__scheduled?cron=0+12+*+*+5"
 ```
 
-> Nota: el puerto puede ser diferente
+> Nota: el puerto del worker puede ser diferente
