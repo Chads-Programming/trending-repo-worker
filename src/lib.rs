@@ -34,9 +34,9 @@ async fn main(_e: ScheduledEvent, env: Env, _ctx: ScheduleContext) {
         .build()
         .expect("Cannot build client reqwest");
 
-    let query = SearchRepositoryQuery::new(Some(100), ["nextjs", "typescript"].to_vec());
+    let query = SearchRepositoryQuery::new(Some(100), ["nextjs", "typescript", "nestjs"].to_vec());
     let trending_response =
-        trending_repo::get_trending_repos(&client, &github_token, &query, 10).await;
+        trending_repo::get_trending_repos(&client, &github_token, &query, 5).await;
 
     let Ok(trending_repos) = trending_response else {
         let err = trending_response.err().unwrap();
